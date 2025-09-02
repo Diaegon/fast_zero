@@ -6,7 +6,14 @@ from fast_zero.app import app
 
 
 def test_root_deve_retornar_hello_world():
-    client = TestClient(app) #arrange
-    response = client.get('/')#act
-    assert response.status_code == HTTPStatus.OK  #assert
-    assert response.json() == {'message': 'hello world'}#assert
+    client = TestClient(app)  # arrange
+    response = client.get('/')  # act
+    assert response.status_code == HTTPStatus.OK  # assert
+    assert response.json() == {'message': 'hello world'}  # assert
+
+
+def test_ola_deve_retornar_html():
+    client = TestClient(app)  # arrange
+    response = client.get('/ola')  # act
+    assert response.status_code == HTTPStatus.OK  # assert
+    assert response.text == 'ola mundo'  # assert
