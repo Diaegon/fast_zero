@@ -81,5 +81,41 @@
 >usaremos o **pydantic** que criará os schemas de dados e a validação dos dados, o pydantic é uma dependência do fastAPI e não precisa ser instalado
 >
 
+>
+>**estruturando projetos e criando CRUD** a CRUD é basicamente as quatro operações que podemos fazer em um banco de dados
+> Create, Read, update e delete, no protocolo HTTP temos quatro verbos que fazem a mesma coisa. POST, GET, PUT e DELETE.
+>
+>>criamos uma função para o cadastro de usuário e é imprescindível que tenhamos uma resposta de confirmação quando a conta for criada por meio do status_code.
+>>definiremos o modelo de entrada de dados, para que o app e o cliente tenham a certeza de que usarão os mesmos dados, para isso >>criamos uma classe do pydantic no arquivo schemas. o ponto forte do pydantic é que ele cuida da parte de validação dos dados
+>>quando o usuario coloca dados que não estão de acordo com o schema definido, o sistema retorna erro 422, e caso a resposta 
+>>do servidor não siga o schema é levantado o erro 500, sendo assim uma segurança de duas vias
+>>
+>
+
+>
+>Apos criar um db falso(simulando o db em uma lista) para continuar a escrita do código, vamos criar um test para o método post.
+>criamos o teste do post de um novo usuário e percebemos que existe uma parte no test se repetindo, a parte do arrange que cria um
+>cliente para rodar o teste, percebendo essa repetição vamos estudar uma funcionalidade do pytest chamada fixture para resolver esse problema.
+>Vamos criar uma fixture que retorna nosso client, criando um arquivo novo na pagina de testes chamado conftest.py. feito o client no conftest
+>podemos somente passar ele no parametro de cada teste e não precisamos mais criar um cliente toda vez. com o método POST finalizado, agora partimos
+>para o método Read
+>
+
+>
+>Partimos para implementar a rota GET, que está associada a operação Read e tem que retornar o status 200. 
+>feito o schema agora vamos configurar o endpoint e por sua vez o teste. configurando esse endpoint ficou claro que o modelo de resposta padrão do 
+>fastAPI é o json. Outra boa observação é que aprendemos muito sobre programação e funcionamento do python quando testamos.
+>
+
+>
+>O proximo passo é implementar a rota PUT, que é equivalente a operação update. se a solicitação for bem sucedida deve retornar 200, 
+>se o usuario não for encontrado deve retornar 404. como vamos alterar os dados de um usuário precisamos achaar ele pelo identificador, no nosso caso > o id. então o Endpoint que vamos construir deve receber o id de quem será alterado. para fazer essa identificação do recurso na URL usamos a 
+>seguinte combinação /caminh/recurso mas como o recurso é dinâmico, ele deve ser enviado pelo cliente. fazendo com que o valor tenha q ser uma
+>variável. Dentro do FastAPI, as variáveis de recursos são descritas dentro de {}, como {user_id}.
+> com o endpoint definido agora implementamos a rota de teste.
+>
+
+>
+>passamos para a operação delete 
 
 
