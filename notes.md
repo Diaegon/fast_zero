@@ -116,6 +116,88 @@
 >
 
 >
->passamos para a operação delete 
+>passamos para a operação delete e foi implementada tanta a operção quanto os testes, vale ressaltar que 
+>a resposta da operação delete é uma escolha pessoal, alguns não ligam para o tipo de resposta. 
 
+>
+>**configurando o banco de dados** para gerenciar as configurações do código usaremos o pydantic-settings
+>ele nos permite configurar de uma forma segura e simplificada a parte sensível dos nossos dados na criação
+> do código. para gerenciar as alterações no banco de dados usaremos o SQLALCHEMY que nos ajuda a estruturar
+> a ORM. A ORM é object-relational-mapper é uma técnica que facilita a comunicação entre um código orientado 
+> a objeto e um banco de dados relacional, com elas conseguios manipular banco de dados utilizando classes 
+> e objetos python.
+>e o CORE que disponibiliza uma interface SQL abstrata que permite a gente se comunicar com um BD de maneira
+>segura e alinhada com as convenções python
+>
+>alem desses dois temos também a Engine e a Session, onde a Engine fica encarregada de fazer a conexão com os 
+>BD's e gerencia-las e a session é a encarregada das transações, mediada pela engine ela faz a conexão do python
+>com o BD.
+
+>
+>montando nosso ORM vamos usar o registrador de tabelas para converter automáticamente as classes em dataclasses 
+>podemos também usar por herança. no arquivos models.py vamos encontrar que Cada classe que é registrada pelo 
+>objeto registry é automaticamente mapeada para uma tabela no banco de dados.
+> criando a tabela no no moedels.py vemos que existem alguns valores que precisam ser alterados pelo o próprio
+>bd, como id e created_at, para isso usamos uma função chamada mapped_column, nela conseguimos definir valores
+> como unique, primary_key, etc. temos também valores passados como parametro que não conhecemos do SQL, como
+>é o caso do init que indica que aquele atributo não precisa ser passado pelo usuário, ele será adicionado 
+>pelo próprio banco, que é o caso do id e do created_at.
+>
+
+
+>com o banco de dados montado é interessante a gente criar uma fixture para testar ele, essa fixture 
+>vai criar um db em memoria toda vez que a chamarmos e após realizar os testes vai apagar ele.
+>com essa fixture feita agora criamos um arquivo test_db.py no diretorio test, ele deve criar um usuario
+>e logo apos pesquisar um usuario para ver se o usuario foi criado com sucesso.
+
+
+>
+>**execução de testes é uma parte vital do desenvolvimento de qualquer aplicação. Os testes nos ajudam a identificar e corrigir problemas antes que eles se tornem mais sérios. Eles também fornecem a confiança de que nossas mudanças não quebraram nenhuma funcionalidade existente.**
+>
+>
+
+>
+>**Eventos do ORM** podemos validar os objetos inseridos por meio do teste, como nome, password e email, porém
+>existem objetos que fogem do mecanismo de criação da tabela (init=false), para podemos validar os campos
+> que fogem do nosso controle, podemos usar o sistema de eventos do sqlalchemy
+>os eventos são blocos de códigos que podem ser inseridos ou retirados antes e depois de uma operação.
+>Ao escrever testes a restrição init=false pode nos trazer algumas dificuldades no momento das validações
+>
+> escrevemos uma função para que ela apareça e insira um dado "fake" toda vez que aparecer uma restrição
+>chamamos isso de gerenciador de contexto(assunto interessante para procurar entender),
+> 
+>A ideia por trás dessa função é ser um gerenciador de contexto (para ser chamado em um bloco with). 
+>Toda vezes que um registro de model for inserido no banco de dados, se ele tiver o campo created_at, por
+>padrão, o campo será cadastrado com a sua data pré-fixada '01/01/2024'. Facilitando a manutenção dos testes
+>que precisam da comparação de data, pois será determinística. como agora todos os dados são deterministicos
+>podemos agora passar para a fase de configuração de bd e gerenciamento de migrações.
+>
+
+>
+>criamos uma arquivo settings para ser criada uma classe de settings, e a partir dele sempre que ela for
+>chamada temos um modelo padrão de configs. também criaremos um arquivo de variaveis de ambiente e colocaremos
+> o database no gitignore pois é uma pratica ruim colocar o db no versionamento do código.  
+>com o database definido precisamos usar uma ferramenta que migre o banco de dados entre versões do código
+>enquanto o código evolui, os metadados do banco possa evoluir de acordo com a versão do código.
+>usaremos o alembic.
+>
+
+>
+>com o alembic instalado vamos gerar nossa primeira migração, mas antes temos que garantir que o alembic consiga 
+>acessar nossas configurações e modelos corretamente. para isso faremos as seguintes alterações no arquivo
+>migrations/env.py
+>- **Importar as Settings do nosso arquivo settings.py e a table_registry dos nossos modelos.**
+>-**Configurar a URL do SQLAlchemy para ser a mesma que definimos em Settings.**
+>-**Verificar a existência do arquivo de configuração do Alembic e, se presente, lê-lo.**
+>-**Definir os metadados de destino como table_registry.metadata, que é o que o Alembic utilizará para gerar automaticamente as migrações.**
+>Feitas essas alterações, estamos prontos para gerar nossa primeira migração automática. O Alembic é capaz de gerar migrações a 
+> partir das mudanças detectadas nos nossos modelos do SQLAlchemy.
+>> para criar a migração usamos o comando no terminal
+>> alembic revision --autogenerate -m "create users table"
+>
+> No arquivo de migração é criado um arquivo chamado migrations/versions/(??????)
+>Esse arquivo descreve as mudanças a serem feitas no banco de dados. Ele usa a linguagem core do SQLAlchemy, que é mais baixo nível que o ORM.
+>As funções upgrade e downgrade definem, respectivamente, o que fazer para aplicar e para desfazer a migração. No nosso caso, a função upgrade
+>cria a tabela 'users' com os campos que definimos em fast_zero/models.pye a função downgrade a remove.
+>
 
