@@ -201,3 +201,15 @@
 >cria a tabela 'users' com os campos que definimos em fast_zero/models.pye a função downgrade a remove.
 >
 
+>
+>começaremos agora a integração do banco de dados com a API, a primeira coisa é definir a sessão, que é o canal lógico de 
+>trabalho entre o cliente e o BD. Nesse parte da aula vamos aprender a manipular as dependências do código e deixar ele
+>o menos acoplado o possível manuseando a injeção de dependências.  utilizaremos a função do FASTAPI depends.
+>Agora que temos a nossa sessão de banco de dados gerenciada por meio do FastAPI e da injeção de dependências,
+>atualizaremos nossos endpoints para poderem tirar proveito disso. Começaremos com a rota de POST para a criação de usuários.
+>
+
+>
+>Quandon eu passo uma função dentro da Depends() ela faz com que a função passada dentro da depends seja inicialida antes da função
+>na qual ela foi chamada, nesse caso passando a função get_session dentro da depends, garante que todo operação no BD só se inicie
+>após uma sessão ser criada. 
