@@ -213,3 +213,20 @@
 >Quandon eu passo uma função dentro da Depends() ela faz com que a função passada dentro da depends seja inicialida antes da função
 >na qual ela foi chamada, nesse caso passando a função get_session dentro da depends, garante que todo operação no BD só se inicie
 >após uma sessão ser criada. 
+>apos o banco de dados real ser conectado ao sistema, vamos para a parte das autenticações.
+>
+
+>
+>A autenticação é o processo que confirmamos quem o usuário é, e a autorização é o processo para verificar o que ele pode fazer.
+>Usaremos o JSON Web Token para (JWT) para implementar a autenticação, e adicionaremos lógica de autorização nos endpoints.
+>Usaremos a biblioteca pwdlib  para encripitar as senhas.
+>criamos um arquivo security.py para ser o arquivo que gera os tolkens jwt e por finalidade didática criaremos um test pra ele.
+>
+
+>
+>Modificaremos os endpoins para encripitar as senhas passadas pelo usuario antes de jogar elas no banco.
+>após os endpoints de create e update estarem modificados para a senha ser colocada em hash no banco de dados
+>vamos fazer um endpoin para criação de token de autenticação do usuário e seu teste.
+>com a criação do token e seu teste, a gente parte para criar uma função que valide esse token que estará no head da requisição
+>criamos a função get_current_user() no arquivo security.py e a partir dele podemos proteger os endpoints.
+>
