@@ -230,3 +230,9 @@
 >com a criação do token e seu teste, a gente parte para criar uma função que valide esse token que estará no head da requisição
 >criamos a função get_current_user() no arquivo security.py e a partir dele podemos proteger os endpoints.
 >
+
+>
+>chegamos na fase de reestruturação do código, usaremos uma ferramenta do fastaPI chamada routers, que separa as atribuições
+>semelhantes e melhora a legibilidade e organização do código.
+> o primeiro passo é tirar todos os endpoints do app que possuem o mesmo contexto e passar para o subapp users da pasta routers,
+>
