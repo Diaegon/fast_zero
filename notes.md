@@ -234,5 +234,24 @@
 >
 >chegamos na fase de reestruturação do código, usaremos uma ferramenta do fastaPI chamada routers, que separa as atribuições
 >semelhantes e melhora a legibilidade e organização do código.
-> o primeiro passo é tirar todos os endpoints do app que possuem o mesmo contexto e passar para o subapp users da pasta routers,
+> o primeiro passo é tirar todos os endpoints do app que possuem o mesmo contexto e passar para o subapp users da pasta routers.
+>muito da nossa estrutura vai depender de qual filosofia de arquitetura a gente segue. nessa aula fizemos a atualização
+> de estrutura e os testes necessários para que o projeto consiga avançar
 >
+
+>
+>Com o projeto refatorado e melhorada a legibilidade e manutenção, vamos tornar ele um projeto assincrono
+>a importância de tornar um projeto assincrono é fazer com que ele consiga ter diversas requisições simultaneas
+>quando um projeto é sincrono ele espera uma requisição terminar para iniciar outra e isso pode acabar gerando
+>um gargalo que fará a aplicação ficar lenta.
+>usaremos a biblioteca asyncio do sqlachemy para manusear as orm do bd, e temos que baixar o aiosqlite para informar
+>ao sqlite que estamos lidando com um bd assincrono.
+>
+>>O comportamento padrão do SQLAlchemy é expirar o cache de objetos após um commit, o que pode causar problemas em operações
+>> assíncronas, pois o objeto pode ser descartado enquanto estamos aguardando em outra corrotina. 
+>> outra coisa é que o pytest não lida muito bem com programação assincrona então temos que instalar uma extensão
+>> poetry add --group dev pytest-asyncio
+>
+
+>justando a sessão de testes, passaamos para o ajuste da sessão de teste do bd.
+
