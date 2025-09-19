@@ -253,5 +253,16 @@
 >> poetry add --group dev pytest-asyncio
 >
 
->justando a sessão de testes, passaamos para o ajuste da sessão de teste do bd.
+>
+>justando a sessão de testes, passaamos para o ajuste da sessão de teste do bd. após deixar os testes assíncronos
+>partimos para a parte de deixar a autenticação mais robusta.
+>
+
+>
+>o primeiro teste que fizemos foi o teste de um usuário tentar apagar outro usuário, porém ele não tem permissão para isso
+>o teste tinha que retornar um erro 403, é interessante que nesse momento percebi uma coisa, o erro retornado no teste
+>foi o 401 e o que estava de errado no código era o espaço do header. mostra a importância de enteder o que está
+>acontencendo não só no python mas na camada do servidor e na comunicação dele. na continuação da tentativa
+>de deixar a autenticação robusta vamos colocar um tempo de vida no token, para evitar que alguém roube um token
+> e possa passar muito tempo alterando coisas sem permissão.
 

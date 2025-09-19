@@ -61,11 +61,11 @@ def test_read_users_with_users(client, user):
     assert response.json() == {'users': [user_schema]}
 
 
-# def test_read_user_with_id(client, user):
-#     user_schema = UserPublic.model_validate(user).model_dump()
-#     response = client.get(f'/users/{user.id}')
-#     assert response.status_code == HTTPStatus.OK
-#     assert response.json() == user_schema
+def test_read_user_with_id(client, user):
+    user_schema = UserPublic.model_validate(user).model_dump()
+    response = client.get(f'/users/{user.id}')
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == user_schema
 
 
 def test_update_user(client, user, token):
@@ -84,6 +84,20 @@ def test_update_user(client, user, token):
         'email': 'bobexemple@gmail.com',
         'id': user.id,
     }
+
+
+def test_update_user_with_wrong_user(client, other_user, token):
+    response = client.put(
+        f'/users/{other_user.id}',
+        headers={'Authorization': f'Bearer {token}'},
+        json={
+            'username': 'bob',
+            'email': 'bob@example.com',
+            'password': 'testtest',
+        },
+    )
+    assert response.status_code == HTTPStatus.FORBIDDEN
+    assert response.json() == {'detail': 'Not enough permissions'}
 
 
 def test_update_integrity_error(client, user, token):
@@ -133,10 +147,10 @@ def test_get_current_user_notfound(client):
     assert response.json() == {'detail': 'Could not validate credentials'}
 
 
-# def test_read_user_id_not_found(client, user):
-#     response = client.get(f'/users/{user.id + 13}')
-#     assert response.status_code == HTTPStatus.NOT_FOUND
-#     assert response.json() == {'detail': 'User not found'}
+def test_read_user_id_not_found(client, user):
+    response = client.get(f'/users/{user.id + 13}')
+    assert response.status_code == HTTPStatus.NOT_FOUND
+    assert response.json() == {'detail': 'User not found'}
 
 
 def test_get_current_user_does_not_exists__exercicio(client):

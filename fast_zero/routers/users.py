@@ -73,8 +73,8 @@ async def read_users(
 
 
 @router.get('/{user_id}', response_model=UserPublic)
-def read_user_with_id(user_id: int, session: Session):
-    user = session.scalar(select(User).where(User.id == user_id))
+async def read_user_with_id(user_id: int, session: Session):
+    user = await session.scalar(select(User).where(User.id == user_id))
     if not user:
         raise HTTPException(
             status_code=HTTPStatus.NOT_FOUND, detail='User not found'
