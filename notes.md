@@ -266,3 +266,10 @@
 >de deixar a autenticação robusta vamos colocar um tempo de vida no token, para evitar que alguém roube um token
 > e possa passar muito tempo alterando coisas sem permissão.
 
+>
+>após a autenticação ficar robusta, passamos a implementar os endpoints dos TO-DO's e seus testes. primeiramente testamos 
+> a criação do to-do depois testamos as pesquisas, pesquisa por descrição, titulo, estado(feito, em progresso, etc.) e os limites.
+>por fim a gente testa a pesquisa por todos os parametros combinados. precisamos também criar o endpoint de alterar a tarefa.
+>basicamente um endpoint para cada funcionalidade que queremos na nossa API.
+
+
