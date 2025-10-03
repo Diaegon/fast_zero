@@ -273,3 +273,12 @@
 >basicamente um endpoint para cada funcionalidade que queremos na nossa API.
 
 
+>
+>Criamos as CRUDS do nosso gerenciador de tarefas e fizemos os testes necessários, no momento que aplicamos
+>os campos updated e created no response model de algumas endpoints percebemos a importancia do gerador de contexto
+>mock_db time para criar uma data fixa que facilite a aplicação dos testes.
+>
+
+>
+>apos finalizar o gerenciador de tarefas, temos uma aplicação funcional e podemos partir para a dockerização do projeto.
+>

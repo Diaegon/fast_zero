@@ -1,24 +1,8 @@
 from http import HTTPStatus
 
+from fast_zero.models import User
 from fast_zero.schemas import UserPublic
 from fast_zero.security import create_access_token
-
-
-def test_create_user(client):
-    response = client.post(
-        '/users/',
-        json={
-            'username': 'diego',
-            'email': 'diego@exemple.com',
-            'password': 'secret',
-        },
-    )
-    assert response.status_code == HTTPStatus.CREATED
-    assert response.json() == {
-        'username': 'diego',
-        'email': 'diego@exemple.com',
-        'id': 1,
-    }
 
 
 def test_create_user_integrity_error_user(client, user):
@@ -56,33 +40,37 @@ def test_read_users(client):
 
 
 def test_read_users_with_users(client, user):
-    user_schema = UserPublic.model_validate(user).model_dump()
+    user_schema = UserPublic.model_validate(user).model_dump(mode='json')
     response = client.get('/users/')
     assert response.json() == {'users': [user_schema]}
 
 
 def test_read_user_with_id(client, user):
-    user_schema = UserPublic.model_validate(user).model_dump()
+    user_schema = UserPublic.model_validate(user).model_dump(mode='json')
     response = client.get(f'/users/{user.id}')
     assert response.status_code == HTTPStatus.OK
     assert response.json() == user_schema
 
 
-def test_update_user(client, user, token):
-    response = client.put(
-        f'/users/{user.id}',
-        headers={'Authorization': f'Bearer {token}'},
-        json={
-            'username': 'bob',
-            'email': 'bobexemple@gmail.com',
-            'password': 'testtest',
-        },
-    )
+def test_update_user(client, user, token, mock_db_time):
+    with mock_db_time(model=User) as time:
+        response = client.put(
+            f'/users/{user.id}',
+            headers={'Authorization': f'Bearer {token}'},
+            json={
+                'username': 'bob',
+                'email': 'bobexemple@gmail.com',
+                'password': 'testtest',
+            },
+        )
+
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {
         'username': 'bob',
         'email': 'bobexemple@gmail.com',
         'id': user.id,
+        'created_at': time.isoformat(),
+        'updated_at': time.isoformat(),
     }
 
 

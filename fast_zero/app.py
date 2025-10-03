@@ -1,3 +1,5 @@
+import asyncio
+import sys
 from typing import Annotated
 
 from fastapi import Depends, FastAPI
@@ -5,6 +7,9 @@ from sqlalchemy.orm import Session
 
 from fast_zero.database import get_session
 from fast_zero.routers import auth, todos, users
+
+if sys.platform == 'win32':
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 app = FastAPI()
 app.include_router(users.router)
