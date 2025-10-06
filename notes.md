@@ -285,4 +285,7 @@
 
 >
 >Com o projeto com a imagem feita e rodando no ambiente do docker, vamos passar para o estudo da integração contínua.
->
+>A ideia da integração continua, CI, é fazer com que um time consiga alterar o código no repositório de forma ordenada
+>e em um ambiente que previna erros e seja fácil de lidar quando eles ocorrerem. no nosso projeto a integração contínua
+>segue os seguintes passos: instalar o python, instalar o poetry, instalar as dependencias via poetry e executar os testes
+> via poetry. 
