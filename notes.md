@@ -282,3 +282,7 @@
 >
 >apos finalizar o gerenciador de tarefas, temos uma aplicação funcional e podemos partir para a dockerização do projeto.
 >
+
+>
+>Com o projeto com a imagem feita e rodando no ambiente do docker, vamos passar para o estudo da integração contínua.
+>
